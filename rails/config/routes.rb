@@ -3,6 +3,8 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   devise_for :users, :controllers => { omniauth_callbacks: 'users/omniauth_callbacks', sessions: 'sessions' }
 
+  mount Sidekiq::Web => '/sidekiq'
+
   scope 'api' do
     resources :offers
     resources :applicants, only: [:index, :show, :update]
