@@ -227,7 +227,7 @@ GEM
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     public_suffix (2.0.5)
-    puma (3.7.0)
+    puma (3.11.0)
     rack (2.0.3)
     rack-cors (0.4.0)
     rack-protection (2.0.0)
@@ -395,7 +395,7 @@ DEPENDENCIES
   premailer-rails
   pry-byebug
   pry-rails
-  puma (~> 3.0)
+  puma (~> 3.11)
   rack-cors
   rails (~> 5.0.1)
   rails-controller-testing
@@ -416,4 +416,4 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 BUNDLED WITH
-   1.16.0.pre.2
+   1.16.1
