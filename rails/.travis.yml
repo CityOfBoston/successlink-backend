@@ -8,10 +8,14 @@ branches:
   only:
   - production
   - staging
-  - "/^greenkeeper\\/.*$/"
+  - test
 before_deploy:
 - pip install --upgrade --user awscli
 deploy:
+- provider: script
+  script: "./deploy/deploy.sh $STAGING_CLUSTER_STACK $STAGING_APP_STACK $STAGING_REPOSITORY_NAME $STAGING_DESIRED_COUNT"
+  on:
+    branch: aws-deploy-setup
 - provider: script
   script: "./deploy/deploy.sh $STAGING_CLUSTER_STACK $STAGING_APP_STACK $STAGING_REPOSITORY_NAME
     $STAGING_DESIRED_COUNT"
@@ -25,4 +29,4 @@ deploy:
 notifications:
   slack:
     rooms:
-      secure: f/JZuEI6pLZDnhN7rwZ7qdCuPE52qxms04KBCVhjqOUCsabxM2+7freBfwpv2qkacOFA84dv+yC97Sqt3EIumvqwOhqJ2PUddaRJs3jgxkATuWh4by9QyQcbDNr7kNvb978FxJQmRzzAJ1Wsp48XVo9BsSDccAorjaVHq+q7abRyRKsm22DXmG6MGkDzK5VzpwbTc7rpECkAcxZSFTLjVcI2nHuGIGRm0P3LfZBcqPKrkcW4KsWtCTSx4FFQ9aFthTmTGLu5A22sPb/3RJ7V2tGQeEj/3vHb0JF1YPVkDgxGURCA9gHOw+u5Rh0+qh4Bt4nOBVlMZkEF9g+qHlZ4tQAuozzc3ll0bCliounob5qaES3t2qqoW8pDMEznRwwK10gRbqSSAEtp5GWA9qlI8XIbAG6lGREz3unubknyOOq/Y37foeHezyP+/dVujcuyYBU41dN/bLTvx9sa8q5Eoou8UK6XU9bSIY8Hhbwwu0g0bQ0iEp7mHjQEPn2KrxhfUmYQUnI0ofM1hPaXF9vzAt7zQm0PtHUzjEPH1BRFj8KfcLts39fPSxoQNyqzg4W8PREuivGtnQ9ILiGkDHznz3qbm/3Lc6NP8/eeh36LM55HhDIccbE8n7NlQNfMsXFeA23oOJ6AD7Bn95mXThHlH++43pYsVlWpIHLqlL4i17s=
+      secure: 1CMBsemLsoz/bAUUM2aHDyRp+Jhx3TEWKLVIPZizeCIqRfzTb5bTIPAI2BEaaGtYnSWjcMnGJu9ejCvghhKZ+DFY2Yl7lClRDC+WIWPnWDEMt1T9cDLWrB2Cb+UcPVdEhkPNSJ9pKDHTs6GlyifJN5AMmGISbhp4uOJkxAYoQAt39vRgmJVod7Iprlwuy0ch9kkl8HJ36xaX4t7XNHMa57YaR+LD1gyPTYPti+6VHmh8MVu5GP5bt9VSJYA1EvtRvJnyiBA9lbgvn1dFE/AERRu2dWYUph7zW5bkrZpBKHXlQ5iHP3/oBL0DtqIxei2mGaCyFhGn+uto54l1Bi5zZ/r86j9k/C8oSwQL1YQ+QhmImMTZKRTWIZ4kfI3zZ7+1NyxgzCWpgD3MTQFTEdqxb+xmjuWJ9il88gXWk+PLuVEbGX6ucMDKKG4gV6OX8ofnCzAC7KH2vr3ialXj4DNBhsfTur6MBjWwOsBmWpJZ8QzZl3IESAVmHAv5sl6hdO1+PwewwFHiy3/nDmuFTZRiB0Mv+sa1o+j1YpaP0bBjhAbJdXsS9c/w4kgzMFMydGSIn0RRWSmnFPrTdc9f+q7mF8zvTXD9D/KsSn5JPCUnq3hB5BonPmDQHWantPSQAblppAfLSUlZYVLG3sjxKCaZQpdj9GENLNjqfPGm1BHmQsk=
