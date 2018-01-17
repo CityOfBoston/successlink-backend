@@ -24,7 +24,7 @@ Parameters:
   ServiceDesiredCount:
     Type: Number
     Description: Update this and redeploy to change the number of instances of the service
-    Default: 0
+    Default: 1
 
   LoadBalancerListenerPriority:
     Type: Number
@@ -60,7 +60,7 @@ Parameters:
     Description: Name for cache and database
     AllowedPattern: '[A-Za-z0-9-]+'
     MaxLength: 20
-    Default: contactform-staging
+    Default: successlink-staging
 
   DeployUserName:
     Type: String
@@ -289,6 +289,6 @@ Outputs:
     Description: URL (without credentials) for the database instance. Put in .env.
     Value:
       Fn::Sub:
-        - 'postgres://${DbUsername}:********@${Address}:${Port}/contactform?sslmode=require'
+        - 'postgis://${DbUsername}:********@${Address}:${Port}/successlink?sslmode=require'
         - Address: !GetAtt Database.Endpoint.Address
           Port: !GetAtt Database.Endpoint.Port
