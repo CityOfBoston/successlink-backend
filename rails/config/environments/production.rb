@@ -61,11 +61,8 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.delivery_method = :mailgun
-  config.action_mailer.mailgun_settings = {
-    api_key: Rails.application.secrets.mailgun_api_key,
-    domain: 'mailgun.mapc.org'
-  }
+  config.action_mailer.delivery_method = :postmark
+  config.action_mailer.postmark_settings = { :api_token => Rails.application.secrets.postmark_api_token }
 
   config.action_mailer.default_url_options = { host: 'dyee.mapc.org' }
 
