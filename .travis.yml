@@ -29,7 +29,7 @@ branches:
   only:
   - production
   - staging
-  - aws-deploy-setup
+  - develop
   - "/^greenkeeper\\/.*$/"
 
 before_deploy:
