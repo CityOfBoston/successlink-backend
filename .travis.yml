@@ -16,7 +16,7 @@ deploy:
 - provider: script
   script: "./deploy/deploy.sh $STAGING_CLUSTER_STACK $STAGING_APP_STACK $STAGING_REPOSITORY_NAME $STAGING_DESIRED_COUNT"
   on:
-    branch: aws-deploy-setup
+    branch: develop
 - provider: script
   script: "./deploy/deploy.sh $STAGING_CLUSTER_STACK $STAGING_APP_STACK $STAGING_REPOSITORY_NAME
     $STAGING_DESIRED_COUNT"
