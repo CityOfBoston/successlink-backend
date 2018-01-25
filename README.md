@@ -2,6 +2,26 @@
 
  Automating a lottery which matches local young people to meaningful (summer) employment, and tracking their responses.
 
+## EnvironmentConfig
+
+SECRET_KEY_BASE
+TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN
+TWILIO_FROM_NUMBER
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+POSTMARK_API_TOKEN
+ICIMS_AUTHORIZATION_KEY
+ICIMS_SFTP_PASSWORD
+ICIMS_CUSTOMER_ID
+RAILS_SERVE_STATIC_FILES
+RAILS_LOG_TO_STDOUT
+RAILS_MAX_THREADS
+DATABASE_URL
+RAILS_ENV
+KNOWN_HOSTS
+DEBUG_CORS
+
 ## Setup
 
 You will need to setup a .env file with some API keys. We use MapZen for geocoding, Twilio for text messaging, and iCIMS is the app we interface with from the City of Boston. See config/secrets.yml for the list of API key variables.
