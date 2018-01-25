@@ -1,32 +1,59 @@
 language: ruby
+
 dist: trusty
+
 services:
 - docker
+
 rvm:
 - 2.4.0
+
+env:
+  global:
+  # AWS_SECRET_ACCESS_KEY, DEPLOY_NOTIFICATION_ARN, and STAGING_REPOSITORY_NAME
+  # are encrypted
+  - secure: SL+SwQb8MOV0K6ugrB8+wZO2OkT1EQKpTEAVTlOJJciwAz2pHPZsHNRB2TVg/xCXxv7PgCnc+n+9/ht1fHYydyouQulsIGwtTgdURzNdadlGnkQfMP7CYTBKPxUltqHH58DsAVCzRzUNeg5RHUk4xo0Pt5WVdGG0TOWLAfrmTFkBcHuh66QphnmXYNokkWqJn0so4/CCB6W5ra/bgd276iBLndoXh9Tg2chDV+ezYRTiv2gXBPENpTjEeXC5T2KcwlfblZycIOQeI0cRzuW5npjA+TCIiY0ACDB73g8Lxkmyf4N9LD8/JIOVGMjYTNn9kjNf9Fh0T3nbvxD4D5vjWk7f6pBy0nDTQMn6IlC0Q6Kx87d/l5nwFryIgguHPusMD5uV3VM+QtIrAenwFqgS1oQo0DQxHOob93TbTBNtaAWz0KdAywA75/58QQlqwKBb/pvHA1G/3FQczagWU+htOgpLEGOzj/nPMYwr7pE1yTNd/EJhKWRiC3ncsH73WWhtfl+91BgxKIEklP97yA8fG+d/GR15UwqA/W4ttwXrrfcTFfaj9mD1NsUITkzEq7j6aMPWsr3GHpYMLWZnJ74bdzmN7Se93RGES5yY6ShvNIKydjbLFM6pbmCiIgV/ZKLWHH4DFj71yS+PdiXp9aQvQqFqlKAYhsC3JeGbs/4GVvc=
+  - secure: fgLmGfkkT0K1s34PQMl5cWRL4plRM1TG+kdBxMUiEJIbvCL3hjJsytLYkJxKbgPCHUPVOPeYZnSgXF2UdU3eSqKVW02ITiZhbTZI0Un//1nNEaqk1R4ovgVk/UOR3AVGXBI1oK4T40Gozv1u6KN0lN5r1QhJAleaTPMYah+3TZ/HEc5NpKuwfH2J4W+iJT+hHoEQkYuweTZPNxuagx1lCOpzMsxrnQDdFdj8XDP7OLSCYCW1KjEefUOTphDPn8HyToofrR62lNhELUhPjuo+wp3iTTDRYCrcAfUc67sduY1xdx+MGptUGKybYUhJ8c8uBmuhEWxya6lBEQHPScgLalTbnoIxw2IFLHUw5xgmBH3vVNoMn/mnLLgazgaAFmDiCdC28Zli1NYyJhr6S5T7xZzQtUM7+0VQ1rqPpcLjrNxm4bwpMakiBzVcnzN6z33c78SwUuWaZJhoWKzR9UVY5hyaqfXspK5AO4+uMXcxAvKHlGdM4s5Fd7Uq/BcLzrfYsgtZ8X5x7MZfd6SB6PeT5NuFvwN8+xj1eVc8dEYL/VvRp+7z3N77I+RWA9lyxicycHVZOczQS7nm0OYOF5kJid/yyzCr8ucmZB6cCDlVMlrDBDFBHL0diSqibXgTcYxf/ZV4RrhlKY7v70pFfdChAozw7vSsepuoetxBXjNd2zQ=
+  - secure: NW3k3oXS4hm8qOpSB/6wGAZTXhw5kMJNAS+YjzwhNfpmC/vPOr+iH3UrfkJzrVWEfnWuhc3T0MCxntwt1etLXl8r7dVmMECV0lUmhmcMUKppd3PrgOO2j2fN20x72oViwHM4k95Ejz3gjdSiYmHCPse0BSQBkP+gNuskDk4jcgMEHt5lezBhPQVLyUE2TcVyn9h63NRqRzQsWDy8mXgbGWpPYmqhaqnaK0Gx9kZcQEySGuX9/nCw86pKBwPMGetfNTdu7hD2DSP6QizccWshWxlnqqH+rXh7H8KF2LdjNyOVabEy6/xHV22kNrFkHOEAG/1sh6tfxc/qlODN34uZ4nr2gpGIYrOC/gtdv1fJqCSZkw3sm+OMDM15EpRWx60tND7eR0QQaeeLujJzmAOJizUppi9M0peYqc9Sf8qlt2Ar0irn+WCxooOJI9nWskrZylgMC03MU30NddEaRmp6kKGMf6sbjX5ELLWC6hXdvyk1fbD8q2HWngs2Z8e36ZEcTgbPquSCk+qCxepArpge9k4WS7XiCOKKii7N2zWgk+iyM/KiCR7INIgN2cs4zd27AUGP+VPHLCyAZmCC7IAH8Et0zCCZaKXJ7Ndf412KV5I8tlUlAX1p15chhBjD99b0kwhdicJ6KeI5yrEIbbpd7Vli0UA2qB/DA5X1uBUGDms=
+  - AWS_ACCESS_KEY_ID=AKIAJX6HJMDFWU4CAC7A
+  - AWS_DEFAULT_REGION=us-east-1
+  - DEPLOY_TEMPLATE_S3_HTTPS=https://cob-digital-cf-templates.s3.amazonaws.com/service/default-webapp-service.yml
+  - STAGING_APP_STACK=AppStaging-SuccessLink
+  - STAGING_CLUSTER_STACK=AppsStaging
+  - STAGING_DESIRED_COUNT=1
+  - PROD_APP_STACK=AppProd-SuccessLink
+  - PROD_CLUSTER_STACK=AppsProd
+  - PROD_DESIRED_COUNT=1
+
 branches:
   only:
   - production
   - staging
   - aws-deploy-setup
   - "/^greenkeeper\\/.*$/"
+
 before_deploy:
 - pip install --upgrade --user awscli
+
 deploy:
 - provider: script
-  script: "./deploy/deploy.sh $STAGING_CLUSTER_STACK $STAGING_APP_STACK $STAGING_REPOSITORY_NAME $STAGING_DESIRED_COUNT"
+  script: "./deploy/deploy.sh $STAGING_CLUSTER_STACK $STAGING_APP_STACK $STAGING_REPOSITORY_NAME
+    $STAGING_DESIRED_COUNT"
   on:
     branch: develop
+
 - provider: script
   script: "./deploy/deploy.sh $STAGING_CLUSTER_STACK $STAGING_APP_STACK $STAGING_REPOSITORY_NAME
     $STAGING_DESIRED_COUNT"
   on:
     branch: staging
+
 - provider: script
   script: "./deploy/deploy.sh $PROD_CLUSTER_STACK $PROD_APP_STACK $PROD_REPOSITORY_NAME
     $PROD_DESIRED_COUNT"
   on:
     branch: production
+
 notifications:
   slack:
     rooms:
