@@ -18,7 +18,7 @@ env:
   - AWS_ACCESS_KEY_ID=AKIAJX6HJMDFWU4CAC7A
   - AWS_DEFAULT_REGION=us-east-1
   - DEPLOY_TEMPLATE_S3_HTTPS=https://cob-digital-cf-templates.s3.amazonaws.com/service/default-webapp-service.yml
-  - STAGING_APP_STACK=AppStaging-SuccessLink
+  - STAGING_APP_STACK=AppStaging-SuccessLink-Deploy
   - STAGING_CLUSTER_STACK=AppsStaging
   - STAGING_DESIRED_COUNT=1
   - PROD_APP_STACK=AppProd-SuccessLink
@@ -32,10 +32,12 @@ branches:
   - develop
   - "/^greenkeeper\\/.*$/"
 
-before_deploy:
-- pip install --upgrade --user awscli
+install: true
 
 script: echo 'Skipping tests.'
+
+before_deploy:
+- pip install --upgrade --user awscli
 
 deploy:
 - provider: script
