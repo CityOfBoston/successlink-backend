@@ -13,9 +13,10 @@ if [ -z "$AWS_S3_CONFIG_URL" ]; then
 fi
 
 if [ -ne "$AWS_S3_CONFIG_URL" "DEBUG" ]; then
+    echo "entrypoint.sh: syncing $AWS_S3_CONFIG_URL to container"
     aws s3 sync $AWS_S3_CONFIG_URL .
 fi
 
-echo "entrypoint.sh: command"
+echo "entrypoint.sh: command $@"
 
 exec "$@"
