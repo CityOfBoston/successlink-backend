@@ -31,4 +31,4 @@ ENV RAILS_ENV=production \
 EXPOSE 5000
 
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["bundle", "exec", "rails", "s", "-p", "5000", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "puma", "-b", "ssl://0.0.0.0:5000?key=server.key&cert=server.crt"]
