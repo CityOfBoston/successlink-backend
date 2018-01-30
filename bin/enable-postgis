@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Referenced and tweaked from http://stackoverflow.com/questions/6174220/parse-url-in-shell-script#6174447
+DATABASE_URL=$1
+proto="$(echo $DATABASE_URL | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+# remove the protocol
+url="$(echo ${DATABASE_URL/$proto/})"
+# extract the user (if any)
+userpass="$(echo $url | grep @ | cut -d@ -f1)"
+PGPASSWORD="$(echo $userpass | grep : | cut -d: -f2)"
+if [ -n "$PGPASSWORD" ]; then
+  user="$(echo $userpass | grep : | cut -d: -f1)"
+
+  # url decode password
+  PGPASSWORD="${PGPASSWORD//+/ }"
+  PGPASSWORD="${PGPASSWORD//%/\\x}"
+else
+    user=$userpass
+fi
+
+# extract the host
+host="$(echo ${url/$userpass@/} | cut -d/ -f1)"
+# by request - try to extract the port
+port="$(echo $host | sed -e 's,^.*:,:,g' -e 's,.*:\([0-9]*\).*,\1,g' -e 's,[^0-9],,g')"
+if [ -n "$port" ]; then
+  host="$(echo $host | grep : | cut -d: -f1)"
+fi
+
+db="$(echo $url | grep / | cut -d/ -f2- | sed -e 's,^\(.*\)\?.*,\1,g')"
+
+psql -U $user -h $host -p $port -d $db  << \EOF
+
+CREATE EXTENSION postgis;
+CREATE EXTENSION fuzzystrmatch;
+CREATE EXTENSION postgis_tiger_geocoder;
+CREATE EXTENSION postgis_topology;
+
+ALTER SCHEMA tiger OWNER TO rds_superuser;
+ALTER SCHEMA topology OWNER TO rds_superuser;
+ALTER TABLE public.spatial_ref_sys OWNER TO rds_superuser;
+GRANT SELECT, INSERT ON TABLE public.spatial_ref_sys TO public;
+
+CREATE FUNCTION exec(text) returns text language plpgsql volatile AS $f$ BEGIN EXECUTE $1; RETURN $1; END; $f$;
+SELECT exec('ALTER TABLE ' || quote_ident(s.nspname) || '.' || quote_ident(s.relname) || ' OWNER TO rds_superuser')
+  FROM (
+    SELECT nspname, relname
+    FROM pg_class c JOIN pg_namespace n ON (c.relnamespace = n.oid)
+    WHERE nspname in ('tiger','topology') AND
+    relkind IN ('r','S','v') ORDER BY relkind = 'S')
+s;
+EOF
