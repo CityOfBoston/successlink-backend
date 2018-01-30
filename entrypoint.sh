@@ -15,6 +15,7 @@ fi
 if [ "$AWS_S3_CONFIG_URL" != "DEBUG" ]; then
     echo "entrypoint.sh: syncing $AWS_S3_CONFIG_URL to container"
     aws s3 sync $AWS_S3_CONFIG_URL .
+    eval $(sed 's/^/export /' .env)
 else
     echo "entrypoint.sh: skipping S3 sync"
 fi
