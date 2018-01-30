@@ -25,7 +25,7 @@ gem 'jquery-rails'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem 'scout_apm'
+# gem 'scout_apm'
 gem 'activerecord-postgis-adapter'
 gem 'faraday'
 gem 'twilio-ruby'
