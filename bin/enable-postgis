@@ -23,11 +23,14 @@ host="$(echo ${url/$userpass@/} | cut -d/ -f1)"
 # by request - try to extract the port
 port="$(echo $host | sed -e 's,^.*:,:,g' -e 's,.*:\([0-9]*\).*,\1,g' -e 's,[^0-9],,g')"
 if [ -n "$port" ]; then
-  host="$(echo $host | grep : | cut -d: -f1)"
+    host="$(echo $host | grep : | cut -d: -f1)"
+else
+    port=5432
 fi
 
 db="$(echo $url | grep / | cut -d/ -f2- | sed -e 's,^\(.*\)\?.*,\1,g')"
 
+echo "Connecting to $db on $host on port $port as user $user."
 psql -U $user -h $host -p $port -d $db  << \EOF
 
 CREATE EXTENSION postgis;
