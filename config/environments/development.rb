@@ -26,8 +26,10 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :postmark
+  config.action_mailer.postmark_settings = { :api_token => Rails.application.secrets.postmark_api_token }
+
+  config.action_mailer.default_url_options = { host: 'localhost:4200' }
 
   config.action_mailer.perform_caching = false
 
