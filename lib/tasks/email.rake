@@ -15,18 +15,15 @@ namespace :email do
     end
   end
 
-  desc "Get auth token by email"
-  task :get_auth, [:email] => :environment do |t, args|
-    unless args[:email].nil?
-      u = User.find_by_email(args[:email])
+  desc "Get auth token"
+  task get_auth: :environment do
+    u = User.find(75)
 
-      unless u.nil?
-        puts u.authentication_token
-      else
-        puts "Email not found"
-      end
+    unless u.nil?
+      puts u.email
+      puts u.authentication_token
     else
-      puts "Must include email"
+      puts "Email not found"
     end
   end
 
