@@ -15,6 +15,21 @@ namespace :email do
     end
   end
 
+  desc "Get auth token by email"
+  task :get_auth, [:email] => :environment do |t, args|
+    unless args[:email].nil?
+      u = User.find_by_email(args[:email])
+
+      unless u.nil?
+        puts u.authentication_token
+      else
+        puts "Email not found"
+      end
+    else
+      puts "Must include email"
+    end
+  end
+
   desc 'Create user accounts for CBOs'
   task create_cbo_accounts: :environment do
     csv_text = File.read(Rails.root.join('lib', 'import', 'partner-emails-6-fixed.csv'))
