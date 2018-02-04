@@ -64,7 +64,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :postmark
   config.action_mailer.postmark_settings = { :api_token => Rails.application.secrets.postmark_api_token }
 
-  config.action_mailer.default_url_options = { host: 'dyee.mapc.org' }
+  config.action_mailer.default_url_options = { host: 'youthjobs.boston.gov' }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
