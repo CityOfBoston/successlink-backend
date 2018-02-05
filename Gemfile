@@ -39,6 +39,7 @@ gem 'semantic-ui-sass', git: 'https://github.com/doabit/semantic-ui-sass.git'
 gem 'nokogiri', '~> 1.8.1'
 gem 'premailer-rails'
 gem 'sidekiq'
+gem 'foreman'
 gem 'simple_form'
 gem 'faker'
 
