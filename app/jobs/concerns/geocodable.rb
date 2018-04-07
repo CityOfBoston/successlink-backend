@@ -7,7 +7,6 @@ module Geocodable
     street_address.gsub!(/\s#\d+/i, '')
     address = URI.encode("#{street_address} Boston MA")
     response = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{address}.json", { access_token: Rails.application.secrets.mapbox_api_key})
-    puts response.body.to_yaml
     
     raise ResponseError, "MapBox Geocoder Error #{response.status}: #{response.body}" unless response.success?
     raise NoFeaturesFoundError if JSON.parse(response.body)['features'].blank?
