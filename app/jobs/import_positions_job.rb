@@ -37,7 +37,10 @@ class ImportPositionsJob < ApplicationJob
                            {},
                            authorization: "Basic #{Rails.application.secrets.icims_authorization_key}")
 
-    puts response
+    puts "Getting address"
+    puts "---------"
+    puts response.to_yaml
+    puts "---------"
     JSON.parse(response.body)
   end
 end
