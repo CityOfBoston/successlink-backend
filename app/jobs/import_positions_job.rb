@@ -5,6 +5,7 @@ class ImportPositionsJob < ApplicationJob
 
   def perform(icims_id)
     job = icims_get(object: 'jobs', id: icims_id, fields: 'overview,responsibilities,qualifications,positiontype,numberofpositions,jobtitle,joblocation,field51224')
+    puts job['joblocation'].to_yaml
 
     unless job['joblocation'].nil?
       job_address = get_address_from_icims(job['joblocation']['address'])
