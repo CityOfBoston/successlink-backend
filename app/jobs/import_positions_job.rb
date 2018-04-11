@@ -5,7 +5,7 @@ class ImportPositionsJob < ApplicationJob
 
   def perform(icims_id)
     job = icims_get(object: 'jobs', id: icims_id, fields: 'overview,responsibilities,qualifications,positiontype,numberofpositions,jobtitle,joblocation,field51224')
-    puts job['joblocation'].to_yaml
+    puts job['joblocation']
 
     unless job['joblocation'].nil?
       job_address = get_address_from_icims(job['joblocation']['address'])
@@ -20,7 +20,7 @@ class ImportPositionsJob < ApplicationJob
                               open_positions: job['numberofpositions'])
 
       if job_address['addressstreet1'].nil?
-        puts job_address.to_yaml
+        puts job_address
         puts "#{icims_id} missing street address"
       end
         
@@ -37,10 +37,6 @@ class ImportPositionsJob < ApplicationJob
                            {},
                            authorization: "Basic #{Rails.application.secrets.icims_authorization_key}")
 
-    puts "Getting address"
-    puts "---------"
-    puts response.to_yaml
-    puts "---------"
     JSON.parse(response.body)
   end
 end
