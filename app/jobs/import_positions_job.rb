@@ -36,6 +36,8 @@ class ImportPositionsJob < ApplicationJob
     response = Faraday.get(address_url,
                            {},
                            authorization: "Basic #{Rails.application.secrets.icims_authorization_key}")
+
+    puts response
     JSON.parse(response.body)
   end
 end
