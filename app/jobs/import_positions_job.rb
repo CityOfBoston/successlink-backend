@@ -19,6 +19,7 @@ class ImportPositionsJob < ApplicationJob
                               open_positions: job['numberofpositions'])
 
       if job_address['addressstreet1'].nil?
+        puts job_address.to_yaml
         puts "#{icims_id} missing street address"
       end
         
