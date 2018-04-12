@@ -5,16 +5,29 @@ class ImportPositionsJob < ApplicationJob
 
   def perform(icims_id)
     job = icims_get(object: 'jobs', id: icims_id, fields: 'overview,responsibilities,qualifications,positiontype,numberofpositions,jobtitle,joblocation,field51224')
-    job_address = get_address_from_icims(job['joblocation']['address'])
-    position = Position.new(icims_id: icims_id,
-                            title: job['jobtitle'],
-                            category: job['field51224'],
-                            duties_responsbilities: job['responsibilities'],
-                            address: job_address['addressstreet1'],
-                            site_name: job['joblocation']['value'],
-                            location: geocode_address(job_address['addressstreet1']),
-                            open_positions: row['numberofpositions'])
-    position.save!
+    puts job['joblocation']
+
+    unless job['joblocation'].nil?
+      job_address = get_address_from_icims(job['joblocation']['address'])
+
+      position = Position.new(icims_id: icims_id,
+                              title: job['jobtitle'],
+                              category: job['field51224'],
+                              duties_responsbilities: job['responsibilities'],
+                              address: job_address['addressstreet1'],
+                              site_name: job['joblocation']['value'],
+                              location: job_address['addressstreet1'].nil? ? '' : geocode_address(street_address: job_address['addressstreet1']),
+                              open_positions: job['numberofpositions'])
+
+      if job_address['addressstreet1'].nil?
+        puts job_address
+        puts "#{icims_id} missing street address"
+      end
+        
+      position.save!
+    else
+      puts "#{icims_id} missing location"
+    end
   end
 
   private
@@ -23,6 +36,7 @@ class ImportPositionsJob < ApplicationJob
     response = Faraday.get(address_url,
                            {},
                            authorization: "Basic #{Rails.application.secrets.icims_authorization_key}")
+
     JSON.parse(response.body)
   end
 end
