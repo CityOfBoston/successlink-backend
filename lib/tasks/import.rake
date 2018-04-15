@@ -465,7 +465,6 @@ namespace :import do
     ]
     puts 'Importing ' + jobs.count.to_s + 'jobs'
     jobs.each do |job_id|
-      puts "Import #{job_id}"
       ImportPositionsJob.perform_now(job_id)
     end
   end
