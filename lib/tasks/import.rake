@@ -390,10 +390,6 @@ namespace :import do
       "14885",
       "14886",
       "14887",
-      "14888",
-      "14889",
-      "14890",
-      "14891",
       "14892",
       "14893",
       "14894",
@@ -489,6 +485,26 @@ namespace :import do
       a.location = RGeo::WKRep::WKBParser.new({}, support_ewkb: true).parse(row['the_geom'])
       a.address = row['address']
       a.save
+    end
+  end
+
+  desc 'Import positions from Rachel cleaned CSV file'
+  task positions_data_cleanup: :environment do
+    csv_text = File.read(Rails.root.join('lib', 'import', 'position-data.csv'))
+    csv = CSV.parse(csv_text, headers: true, encoding: 'ISO-8859-1')
+    csv.each_with_index do |row, index|
+      a = Position.find_by_icims_id(row['icims_id'])
+
+      unless a.nil?
+        a.external_application_url = row['ext_app_url']
+        a.primary_contact_person = row['poc']
+        a.primary_contact_person_email = row['poc_email']
+        a.primary_contact_person_phone = row['poc_phone'].try(:gsub, /\D/, '')
+        a.neighborhood = row['neighborhood']
+        a.save
+      else
+        puts "Couldn't find postion #{row['icims_id']}"
+      end
     end
   end
 
@@ -773,9 +789,9 @@ namespace :import do
 
     youth = User.find(applicant.user_id)
 
-    staff = User.create({ 
-      email: 'staff@seed.org', 
-      password: 'password', 
+    staff = User.create({
+      email: 'staff@seed.org',
+      password: 'password',
       account_type: 'staff',
     })
 
