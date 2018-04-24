@@ -739,6 +739,15 @@ namespace :import do
     end
   end
 
+  desc 'Create user accounts for staff'
+  task staff_accounts_admin: :environment do
+    password = Devise.friendly_token.first(8)
+    user = User.create(email: 'matthew.crist@boston.gov',
+                         password: password,
+                         account_type: 'staff')
+    StaffMailer.staff_login_email(user, password).deliver_now
+  end
+
   desc 'Create all data necessary for demo'
   task demo_data: :environment do
     Applicant.destroy_all
