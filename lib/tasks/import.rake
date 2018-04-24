@@ -764,6 +764,37 @@ namespace :import do
     StaffMailer.staff_login_email(user, password).deliver_now
   end
 
+  desc 'Create user accounts for staff'
+  task applicant_accounts_admin: :environment do
+    applicant = Applicant.new(first_name: 'Matthew',
+                                last_name: 'Crist',
+                                email: 'matthew.crist+applicant@boston.gov',
+                                icims_id: '12121')
+
+    user = User.new(email: applicant.email.downcase,
+      password: Devise.friendly_token.first(8),
+      applicant: applicant)
+
+    if applicant.save!
+      if user.save!
+        puts "https://youthjobs.boston.gov/login?email=#{user.email}&token=#{user.authentication_token}"
+      end
+    end
+  end
+
+  desc 'Create partner accounts for staff'
+  task partner_accounts_admin: :environment do
+    user = User.create(
+      email: 'matthew.crist+partner@boston.gov',
+      password: 'password',
+      account_type: 'partner',
+    )
+
+    if user.save!
+      puts "https://youthjobs.boston.gov/login?email=#{user.email}&token=#{user.authentication_token}"
+    end
+  end
+
   desc 'Create all data necessary for demo'
   task demo_data: :environment do
     Applicant.destroy_all
