@@ -500,6 +500,7 @@ namespace :import do
         a.primary_contact_person = row['poc']
         a.primary_contact_person_email = row['poc_email']
         a.primary_contact_person_phone = row['poc_phone'].try(:gsub, /\D/, '')
+        a.location = geocode_address(row['location'])
         a.neighborhood = row['neighborhood']
         a.save
       else
