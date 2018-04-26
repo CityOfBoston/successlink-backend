@@ -500,6 +500,7 @@ namespace :import do
         a.primary_contact_person = row['poc']
         a.primary_contact_person_email = row['poc_email']
         a.primary_contact_person_phone = row['poc_phone'].try(:gsub, /\D/, '')
+        a.location = geocode_address(row['location'])
         a.neighborhood = row['neighborhood']
         a.save
       else
@@ -752,6 +753,46 @@ namespace :import do
       puts row['Primary Contact Email'] if user.blank?
       next if user.blank?
       StaffMailer.staff_login_email(user, password).deliver_now
+    end
+  end
+
+  desc 'Create user accounts for staff'
+  task staff_accounts_admin: :environment do
+    password = Devise.friendly_token.first(8)
+    user = User.create(email: 'matthew.crist@boston.gov',
+                         password: password,
+                         account_type: 'staff')
+    StaffMailer.staff_login_email(user, password).deliver_now
+  end
+
+  desc 'Create user accounts for staff'
+  task applicant_accounts_admin: :environment do
+    applicant = Applicant.new(first_name: 'Matthew',
+                                last_name: 'Crist',
+                                email: 'matthew.crist+applicant@boston.gov',
+                                icims_id: '12121')
+
+    user = User.new(email: applicant.email.downcase,
+      password: Devise.friendly_token.first(8),
+      applicant: applicant)
+
+    if applicant.save!
+      if user.save!
+        puts "https://youthjobs.boston.gov/login?email=#{user.email}&token=#{user.authentication_token}"
+      end
+    end
+  end
+
+  desc 'Create partner accounts for staff'
+  task partner_accounts_admin: :environment do
+    user = User.create(
+      email: 'matthew.crist+partner@boston.gov',
+      password: 'password',
+      account_type: 'partner',
+    )
+
+    if user.save!
+      puts "https://youthjobs.boston.gov/login?email=#{user.email}&token=#{user.authentication_token}"
     end
   end
 
