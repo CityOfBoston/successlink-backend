@@ -503,7 +503,7 @@ namespace :import do
         a.primary_contact_person = row['poc']
         a.primary_contact_person_email = row['poc_email']
         a.primary_contact_person_phone = row['poc_phone'].try(:gsub, /\D/, '')
-        a.location = geocode_address(street_address: row['location'])
+        a.location = geocode_address(street_address: row['location'], locality: row['neighborhood'])
         a.neighborhood = row['neighborhood']
         
         if a.save!
