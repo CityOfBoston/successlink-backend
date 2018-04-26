@@ -5,6 +5,11 @@ module Geocodable
 
   def geocode_address(street_address:, locality: 'Boston', region: 'MA')
     street_address.gsub!(/\s#\d+/i, '')
+
+    if locality == 'Downtown' || locality == 'Chinatown'
+      locality = 'Boston'
+    end
+
     address = URI.encode("#{street_address} #{locality} #{region}")
     response = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{address}.json", { access_token: Rails.application.secrets.mapbox_api_key})
     
