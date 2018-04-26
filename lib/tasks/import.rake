@@ -496,6 +496,7 @@ namespace :import do
       a = Position.find_by_icims_id(row['icims_id'])
 
       unless a.nil?
+        a.site_name = row['site_name']
         a.external_application_url = row['ext_app_url']
         a.primary_contact_person = row['poc']
         a.primary_contact_person_email = row['poc_email']
