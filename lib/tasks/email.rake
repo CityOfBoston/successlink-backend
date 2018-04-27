@@ -7,7 +7,7 @@ namespace :email do
                          password: Devise.friendly_token.first(8),
                          applicant: applicant)
       if user.valid?
-        # ApplicantMailer.job_picker_email(user).deliver_now
+        ApplicantMailer.job_picker_email(user).deliver_now
         update_icims_status_to_candidate_employment_selection(applicant)
       else
         puts 'APPLICANT USER ACCOUNT CREATION ERROR Failed for: ' + applicant.id
