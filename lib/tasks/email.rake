@@ -1,4 +1,11 @@
 namespace :email do
+  desc "Outputs applicant emails"
+  task applicant_emails: :environment do
+    Applicant.where(user: nil).each do |applicant|
+      puts applicant.email
+    end
+  end
+
   desc "Email applicants the job picker"
   task applicant_job_picker: :environment do
     Applicant.where(user: nil).each do |applicant|
