@@ -775,17 +775,11 @@ namespace :import do
   task applicant_accounts_admin: :environment do
     applicant = Applicant.new(first_name: 'Matthew',
                                 last_name: 'Crist',
-                                email: 'matthew.crist+applicant@boston.gov',
+                                email: 'matthew.crist+applicants@boston.gov',
                                 icims_id: '12121')
 
-    user = User.new(email: applicant.email.downcase,
-      password: Devise.friendly_token.first(8),
-      applicant: applicant)
-
     if applicant.save!
-      if user.save!
-        puts "https://youthjobs.boston.gov/login?email=#{user.email}&token=#{user.authentication_token}"
-      end
+      puts "Saved applicant"
     end
   end
 
