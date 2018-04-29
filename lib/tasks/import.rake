@@ -37,6 +37,7 @@ namespace :import do
 
   desc 'Import applicants from ICIMS'
   task applicants_from_icims: :environment do
+    include Geocodable
     response = icims_search(type: 'applicantworkflows',
                             body: '{"filters":[{"name":"applicantworkflow.status","value":["D10100","C12295","D10105","C22001","C12296"],"operator":"="},{"name":"applicantworkflow.job.id","value":["14459"],"operator":"="}],"operator":"&"}')
     workflows = response['searchResults'].pluck('id') - Applicant.all.pluck(:workflow_id)
@@ -887,7 +888,7 @@ namespace :import do
     street_address = applicant['addresses'].each { |address| break address['addressstreet1'] if address['addresstype']['value'] == 'Home' }
     return nil if street_address.is_a?(Array)
     street_address.gsub!(/\s#\d+/i, '')
-    geocode_address(street_address)
+    geocode_address(street_address: street_address)
   end
 
   def phone(applicant, phone_type)

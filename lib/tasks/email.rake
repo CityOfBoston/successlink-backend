@@ -4,6 +4,9 @@ namespace :email do
     applicants = Applicant.where(user: nil)
     puts applicants.count
 
+    puts User.all.count
+    puts Applicant.all.count
+
     applicants.each do |applicant|
       puts applicant.email
     end
