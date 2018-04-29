@@ -18,6 +18,7 @@ namespace :email do
                          applicant: applicant)
       if user.valid?
         ApplicantMailer.job_picker_email(user).deliver_now
+        puts "Applicant email to #{applicant.email.downcase} sent"
         update_icims_status_to_candidate_employment_selection(applicant)
       else
         puts 'APPLICANT USER ACCOUNT CREATION ERROR Failed for: ' + applicant.id
