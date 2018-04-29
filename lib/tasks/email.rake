@@ -13,6 +13,16 @@ namespace :email do
   end
 
   desc "Email applicants the job picker"
+  task applicant_job_picker_short: :environment do
+    Applicant.all.each do |applicant|
+      next if applicant.user.blank?
+      
+      puts "#{applicant.id} sent to #{applicant.user.email}"
+      ApplicantMailer.job_picker_email(applicant.user).deliver_now
+    end
+  end
+
+  desc "Email applicants the job picker"
   task applicant_job_picker: :environment do
     Applicant.where(user: nil).each do |applicant|
       next if applicant.email.blank?
