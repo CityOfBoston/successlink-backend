@@ -1,8 +1,24 @@
 namespace :email do
   desc "Outputs applicant emails"
   task applicant_emails: :environment do
-    Applicant.where(user: nil).each do |applicant|
+    applicants = Applicant.where(user: nil)
+    puts applicants.count
+
+    puts User.all.count
+    puts Applicant.all.count
+
+    applicants.each do |applicant|
       puts applicant.email
+    end
+  end
+
+  desc "Email applicants the job picker"
+  task applicant_job_picker_short: :environment do
+    Applicant.all.each do |applicant|
+      next if applicant.user.blank?
+      
+      puts "#{applicant.id} sent to #{applicant.user.email}"
+      ApplicantMailer.job_picker_email(applicant.user).deliver_now
     end
   end
 
@@ -15,6 +31,7 @@ namespace :email do
                          applicant: applicant)
       if user.valid?
         ApplicantMailer.job_picker_email(user).deliver_now
+        puts "Applicant email to #{applicant.email.downcase} sent"
         update_icims_status_to_candidate_employment_selection(applicant)
       else
         puts 'APPLICANT USER ACCOUNT CREATION ERROR Failed for: ' + applicant.id
@@ -36,7 +53,7 @@ namespace :email do
 
   desc 'Create user accounts for CBOs'
   task create_cbo_accounts: :environment do
-    csv_text = File.read(Rails.root.join('lib', 'import', 'partner-emails-6-fixed.csv'))
+    csv_text = File.read(Rails.root.join('lib', 'import', 'partner-emails.csv'))
     csv = CSV.parse(csv_text, headers: true, encoding: 'ISO-8859-1')
     csv.each_with_index do |row|
       positions = Position.where(site_name: row['Organization Name'])
