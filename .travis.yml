@@ -11,7 +11,7 @@ env:
   - secure: NW3k3oXS4hm8qOpSB/6wGAZTXhw5kMJNAS+YjzwhNfpmC/vPOr+iH3UrfkJzrVWEfnWuhc3T0MCxntwt1etLXl8r7dVmMECV0lUmhmcMUKppd3PrgOO2j2fN20x72oViwHM4k95Ejz3gjdSiYmHCPse0BSQBkP+gNuskDk4jcgMEHt5lezBhPQVLyUE2TcVyn9h63NRqRzQsWDy8mXgbGWpPYmqhaqnaK0Gx9kZcQEySGuX9/nCw86pKBwPMGetfNTdu7hD2DSP6QizccWshWxlnqqH+rXh7H8KF2LdjNyOVabEy6/xHV22kNrFkHOEAG/1sh6tfxc/qlODN34uZ4nr2gpGIYrOC/gtdv1fJqCSZkw3sm+OMDM15EpRWx60tND7eR0QQaeeLujJzmAOJizUppi9M0peYqc9Sf8qlt2Ar0irn+WCxooOJI9nWskrZylgMC03MU30NddEaRmp6kKGMf6sbjX5ELLWC6hXdvyk1fbD8q2HWngs2Z8e36ZEcTgbPquSCk+qCxepArpge9k4WS7XiCOKKii7N2zWgk+iyM/KiCR7INIgN2cs4zd27AUGP+VPHLCyAZmCC7IAH8Et0zCCZaKXJ7Ndf412KV5I8tlUlAX1p15chhBjD99b0kwhdicJ6KeI5yrEIbbpd7Vli0UA2qB/DA5X1uBUGDms=
   - AWS_ACCESS_KEY_ID=AKIAJX6HJMDFWU4CAC7A
   - AWS_DEFAULT_REGION=us-east-1
-  - DEPLOY_TEMPLATE_S3_HTTPS=https://cob-digital-cf-templates.s3.amazonaws.com/service/default-webapp-service.yml
+  - DEPLOY_TEMPLATE_S3_HTTPS=https://cob-digital-cf-templates.s3.amazonaws.com/service/custom/successlink-service.yml
   - STAGING_APP_STACK=AppsStaging-SuccessLink
   - STAGING_CLUSTER_STACK=AppsStaging
   - STAGING_DESIRED_COUNT=1
