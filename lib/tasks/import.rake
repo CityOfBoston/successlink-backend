@@ -390,10 +390,6 @@ namespace :import do
       "14885",
       "14886",
       "14887",
-      "14888",
-      "14889",
-      "14890",
-      "14891",
       "14892",
       "14893",
       "14894",
@@ -465,7 +461,6 @@ namespace :import do
     ]
     puts 'Importing ' + jobs.count.to_s + 'jobs'
     jobs.each do |job_id|
-      puts "Import #{job_id}"
       ImportPositionsJob.perform_now(job_id)
     end
   end
@@ -490,6 +485,33 @@ namespace :import do
       a.location = RGeo::WKRep::WKBParser.new({}, support_ewkb: true).parse(row['the_geom'])
       a.address = row['address']
       a.save
+    end
+  end
+
+  desc 'Import positions from Rachel cleaned CSV file'
+  task positions_data_cleanup: :environment do
+    include Geocodable
+
+    csv_text = File.read(Rails.root.join('lib', 'import', 'position-data.csv'))
+    csv = CSV.parse(csv_text, headers: true, encoding: 'ISO-8859-1')
+    csv.each_with_index do |row, index|
+      a = Position.find_by_icims_id(row['icims_id'])
+
+      unless a.nil?
+        a.site_name = row['site_name']
+        a.external_application_url = row['ext_app_url']
+        a.primary_contact_person = row['poc']
+        a.primary_contact_person_email = row['poc_email']
+        a.primary_contact_person_phone = row['poc_phone'].try(:gsub, /\D/, '')
+        a.location = geocode_address(street_address: row['location'], locality: row['neighborhood'])
+        a.neighborhood = row['neighborhood']
+        
+        if a.save!
+          puts "Cleaned #{row['icims_id']}"
+        end
+      else
+        puts "Couldn't find postion #{row['icims_id']}"
+      end
     end
   end
 
@@ -740,6 +762,40 @@ namespace :import do
     end
   end
 
+  desc 'Create user accounts for staff'
+  task staff_accounts_admin: :environment do
+    password = Devise.friendly_token.first(8)
+    user = User.create(email: 'matthew.crist@boston.gov',
+                         password: password,
+                         account_type: 'staff')
+    StaffMailer.staff_login_email(user, password).deliver_now
+  end
+
+  desc 'Create user accounts for staff'
+  task applicant_accounts_admin: :environment do
+    applicant = Applicant.new(first_name: 'Matthew',
+                                last_name: 'Crist',
+                                email: 'matthew.crist+applicants@boston.gov',
+                                icims_id: '12121')
+
+    if applicant.save!
+      puts "Saved applicant"
+    end
+  end
+
+  desc 'Create partner accounts for staff'
+  task partner_accounts_admin: :environment do
+    user = User.create(
+      email: 'matthew.crist+partner@boston.gov',
+      password: 'password',
+      account_type: 'partner',
+    )
+
+    if user.save!
+      puts "https://youthjobs.boston.gov/login?email=#{user.email}&token=#{user.authentication_token}"
+    end
+  end
+
   desc 'Create all data necessary for demo'
   task demo_data: :environment do
     Applicant.destroy_all
@@ -765,9 +821,9 @@ namespace :import do
 
     youth = User.find(applicant.user_id)
 
-    staff = User.create({ 
-      email: 'staff@seed.org', 
-      password: 'password', 
+    staff = User.create({
+      email: 'staff@seed.org',
+      password: 'password',
       account_type: 'staff',
     })
 
@@ -832,18 +888,6 @@ namespace :import do
     return nil if street_address.is_a?(Array)
     street_address.gsub!(/\s#\d+/i, '')
     geocode_address(street_address)
-  end
-
-  def geocode_address(street_address)
-    return nil if street_address.blank?
-    street_address.gsub!(/#|\.|(apt|apartment.*\d)/,' ')
-    response = Faraday.get('https://search.mapzen.com/v1/search/structured',
-                           { api_key: Rails.application.secrets.mapzen_api_key,
-                             address: street_address, locality: 'Boston', region: 'MA' })
-    return nil if JSON.parse(response.body)['features'].blank?
-    return nil if JSON.parse(response.body)['features'].count == 0
-    coordinates = JSON.parse(response.body)['features'][0]['geometry']['coordinates']
-    return 'POINT(' + coordinates[0].to_s + ' ' + coordinates[1].to_s + ')'
   end
 
   def phone(applicant, phone_type)
