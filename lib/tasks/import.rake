@@ -506,7 +506,7 @@ namespace :import do
         a.primary_contact_person_phone = row['poc_phone'].try(:gsub, /\D/, '')
         a.location = geocode_address(street_address: row['location'], locality: row['neighborhood'])
         a.neighborhood = row['neighborhood']
-        
+
         if a.save!
           puts "Cleaned #{row['icims_id']}"
         end
@@ -905,7 +905,7 @@ namespace :import do
     client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid,
                                       Rails.application.secrets.twilio_auth_token
     client.messages.create from: '6176168535', to: phone,
-                           body: 'Thank you for applying to the 2017 SuccessLink Lottery.
+                           body: 'Thank you for applying to the 2018 SuccessLink Lottery.
                            We have received your application! You will receive a text and
                            email with your status in the lottery after 3/31.'
   end
