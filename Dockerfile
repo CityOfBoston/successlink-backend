@@ -31,4 +31,4 @@ ENV RAILS_ENV=production \
 EXPOSE 5000
 
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["foreman", "start"]
+CMD ["bundle", "exec", "puma", "-b", "'ssl://0.0.0.0:5000?key=server.key&cert=server.crt'"]
