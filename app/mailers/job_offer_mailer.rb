@@ -5,9 +5,16 @@ class JobOfferMailer < ApplicationMailer
     @user = user
     @offer = user.applicant.offers.order(:created_at).last
     @position = @offer.position
-    @accept_url  = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=true'
-    @decline_url = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=false'
-    mail(to: user.email, subject: '2018 Successlink Job Offer - We’ve picked you for a summer job!')
-    @offer.update(accepted: 'offer_sent')
+
+    puts @offer.position.id
+
+    unless @position.nil?
+      @accept_url  = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=true'
+      @decline_url = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=false'
+      mail(to: user.email, subject: '2018 Successlink Job Offer - We’ve picked you for a summer job!')
+      @offer.update(accepted: 'offer_sent')
+    else
+      raise "Offer #{@offer.id} missing the position"
+    end
   end
 end

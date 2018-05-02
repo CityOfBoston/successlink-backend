@@ -13,7 +13,6 @@ class PickSerializer < ActiveModel::Serializer
   has_one :position, serializer: PositionSerializer do
     # link(:relationships) { position_path(id: object.position.id) }
     position = object.position
-    puts object.position.to_yaml
     # The following code is needed to avoid n+1 queries.
     # Core devs are working to remove this necessity.
     # See: https://github.com/rails-api/active_model_serializers/issues/1325
