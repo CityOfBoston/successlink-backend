@@ -5,6 +5,8 @@ WORKDIR /app
 # Install the AWS CLI
 RUN apk add --update \
   python python-dev curl unzip alpine-sdk postgresql postgresql-dev nodejs nodejs-npm tzdata \
+  bash curl-dev ruby-dev build-base \
+  ruby ruby-io-console ruby-bundler \
   && cd /tmp \
   && curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" \
   && unzip awscli-bundle.zip \

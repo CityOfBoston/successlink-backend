@@ -20,6 +20,7 @@ gem 'rack-cors', require: 'rack/cors' # CORS Headers
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 gem 'thin'
+gem 'skylight'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
