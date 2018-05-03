@@ -6,8 +6,6 @@ class JobOfferMailer < ApplicationMailer
     @offer = user.applicant.offers.order(:created_at).last
     @position = @offer.position
 
-    puts @offer.position.id
-
     unless @position.nil?
       # @accept_url  = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=true'
       # @decline_url = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=false'

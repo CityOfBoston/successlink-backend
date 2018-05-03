@@ -1,10 +1,19 @@
 class PositionsController < ApplicationController
+  skip_before_filter :authenticate_user!, :only => [:export]
+
   def index
     # if includes param == true then do the includes logic
     @positions = Position.all.includes(:applicants)
     respond_to do |format|
       format.jsonapi { render jsonapi: @positions }
     end
+  end
+
+  def export
+    # if includes param == true then do the includes logic
+    @positions = Position.all
+
+    render jsonapi: @positions
   end
 
   def show
