@@ -1,4 +1,6 @@
 class ApplicantsController < ApplicationController
+  skip_before_filter :authenticate_user!, :only => [:export]
+
   def index
     # todo: investigate why the nested routes aren't
     # returning only associated applicants. for now
@@ -18,6 +20,12 @@ class ApplicantsController < ApplicationController
     respond_to do |format|
       format.jsonapi { render jsonapi: @applicants }
     end
+  end
+
+  def export
+    @applicants = Applicant.all
+
+    render jsonapi: @applicants, each_serializer: ApplicantSerializerSlim
   end
 
   def show
