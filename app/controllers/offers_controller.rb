@@ -1,5 +1,5 @@
 class OffersController < ApplicationController
-  before_action :set_offer, only: [:show, :edit, :update, :destroy]
+  before_action :set_offer, only: [:show, :edit, :update, :destroy, :respond]
 
   # GET /offers
   # GET /offers.json
@@ -30,6 +30,29 @@ class OffersController < ApplicationController
 
   # GET /offers/1/edit
   def edit
+  end
+
+  def respond
+    response = params['response']
+    @valid = false
+
+    if @offer.applicant.user.id == current_user.id
+      applicant = @offer.applicant
+
+      # Make sure user hasn't accepted another offer
+      not_responded = has_not_accepted(applicant.offers)
+
+      if not_responded && @offer.accepted == 'offer_sent'
+        unless response.nil?
+          @response = response == 'accept' ? 'yes' : 'no_bottom_waitlist'
+          @offer.accepted = @response
+
+          if @offer.save
+            @valid = true
+          end
+        end
+      end
+    end
   end
 
   # GET /offers/answer
@@ -87,6 +110,20 @@ class OffersController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def has_not_accepted(offers)
+      not_accepted = true
+
+      unless offers.nil?
+        offers.each do |offer|
+          if offer.accepted == 'yes' || offer.accepted == 'no_bottom_waitlist'
+            not_accepted = false
+          end
+        end
+      end
+
+      return not_accepted
+    end
+
     def set_offer
       @offer = Offer.find(params[:id])
     end

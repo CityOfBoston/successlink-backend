@@ -7,8 +7,13 @@ Rails.application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq'
 
+  get 'respond', to: 'offers#respond'
+  get 'applicants/export', to: 'applicants#export'
+  get 'positions/export', to: 'positions#export'
+
   scope 'api' do
     resources :offers
+
     resources :applicants, only: [:index, :show, :update]
 
     resources :positions, only: [:index, :show, :update, :owned] do

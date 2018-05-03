@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.0.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use SCSS for stylesheets
@@ -20,6 +20,7 @@ gem 'rack-cors', require: 'rack/cors' # CORS Headers
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 gem 'thin'
+gem 'appsignal'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
