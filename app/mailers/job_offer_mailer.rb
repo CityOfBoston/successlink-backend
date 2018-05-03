@@ -9,8 +9,11 @@ class JobOfferMailer < ApplicationMailer
     puts @offer.position.id
 
     unless @position.nil?
-      @accept_url  = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=true'
-      @decline_url = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=false'
+      # @accept_url  = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=true'
+      # @decline_url = root_url + 'offers?email=' + user.email + '&token=' + user.authentication_token + '&response=false'
+      @accept_url  = 'https://youthjobsapi.boston.gov/respond?email=' + user.email + '&token=' + user.authentication_token + '&response=accept&id=' + @offer.id
+      @decline_url = 'https://youthjobsapi.boston.gov/respond?email=' + user.email + '&token=' + user.authentication_token + '&response=decline&id=' + @offer.id
+
       mail(to: user.email, subject: '2018 Successlink Job Offer - We’ve picked you for a summer job!')
       @offer.update(accepted: 'offer_sent')
     else
