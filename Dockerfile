@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install the AWS CLI
 RUN apk add --update \
-  python python-dev curl unzip alpine-sdk postgresql postgresql-dev nodejs nodejs-npm tzdata \
+  python python-dev py-pip curl unzip alpine-sdk postgresql postgresql-dev nodejs nodejs-npm tzdata \
   && cd /tmp \
   && curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" \
   && unzip awscli-bundle.zip \
@@ -13,6 +13,7 @@ RUN apk add --update \
   && rm -rf awscli-bundle
 
 RUN npm install -g yarn
+RUN pip install honcho
 
 # By just bringing these in first, we can re-use the npm install layer when the
 # package.json and npm-shrinkwrap haven't changed, speeding up recompilation.
@@ -31,4 +32,4 @@ ENV RAILS_ENV=production \
 EXPOSE 5000
 
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["foreman", "start"]
+CMD ["honcho", "start"]

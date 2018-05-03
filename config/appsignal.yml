@@ -5,6 +5,7 @@ default: &defaults
 
   # Your app's name
   name: "SuccessLink"
+  log: stdout
 
   # Actions that should not be monitored by AppSignal
   # ignore_actions:
