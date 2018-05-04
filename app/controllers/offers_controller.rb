@@ -5,8 +5,7 @@ class OffersController < ApplicationController
   # GET /offers.json
   def index
     if params[:for_applicant]
-      @offers = []
-      current_user.applicant.offers.each { |offer| @offers << offer }
+      @offers = current_user.applicant.offers
     elsif params[:for_positions]
       @offers = []
       current_user.positions.each { |offer| @offers << offer }
