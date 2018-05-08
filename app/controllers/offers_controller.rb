@@ -61,12 +61,20 @@ class OffersController < ApplicationController
     if params[:response]
       if current_user.applicant.lottery_activated?
         @offer.update(accepted: 'yes')
+
+        respond_to do |format|
+          format.jsonapi { render jsonapi: @offer, status: :created }
+        end
       else
         render head :gone
       end
     else
       if current_user.applicant.lottery_activated?
         @offer.update(accepted: 'no_bottom_waitlist')
+
+        respond_to do |format|
+          format.jsonapi { render jsonapi: @offer, status: :created }
+        end
       else
         render head :gone
       end
