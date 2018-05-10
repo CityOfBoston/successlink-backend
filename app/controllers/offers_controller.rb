@@ -40,9 +40,9 @@ class OffersController < ApplicationController
       applicant = @offer.applicant
 
       # Make sure user hasn't accepted another offer
-      not_responded = has_not_accepted(applicant.offers)
+      accepted_offer = has_not_accepted(applicant.offers)
 
-      if not_responded && @offer.accepted == 'offer_sent'
+      if accepted_offer.nil? && @offer.accepted == 'offer_sent'
         unless response.nil?
           @response = response == 'accept' ? 'yes' : 'no_bottom_waitlist'
           @offer.accepted = @response
@@ -51,6 +51,12 @@ class OffersController < ApplicationController
             @valid = true
           end
         end
+      end
+
+      # If the youth has already accepted this offer
+      if accepted_offer == @offer
+        @response = 'yes'
+        @valid = true
       end
     end
   end
@@ -119,17 +125,17 @@ class OffersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def has_not_accepted(offers)
-      not_accepted = true
+      accepted_offer = nil
 
       unless offers.nil?
         offers.each do |offer|
-          if offer.accepted == 'yes' || offer.accepted == 'no_bottom_waitlist'
-            not_accepted = false
+          if offer.accepted == 'yes'
+            accepted_offer = offer
           end
         end
       end
 
-      return not_accepted
+      return accepted_offer
     end
 
     def set_offer
