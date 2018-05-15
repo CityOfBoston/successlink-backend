@@ -51,7 +51,11 @@ namespace :import do
         applicant.workflow_id = workflow_id
 
         if applicant.save
-          puts "#{applicant.icims_id} updated"
+          puts "#{applicant.icims_id} #{applicant.workflow_id} updated"
+
+          if applicant.offers.count > 0
+            puts "#{applicant.icims_id} #{applicant.workflow_id} has offers"
+          end
         end
       else
         puts "#{applicant_id.to_s} is MIA"
