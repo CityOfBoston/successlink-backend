@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
   scope 'admin' do
     resources :partners do
+      collection do
+        get :report
+      end
+
       member do
         post :resend
       end
