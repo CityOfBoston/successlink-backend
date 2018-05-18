@@ -11,9 +11,21 @@ class PositionsController < ApplicationController
 
   def export
     # if includes param == true then do the includes logic
-    @positions = Position.all
+    users = User.where(allocation_rule: 2).where(account_type: "partner")
 
-    render jsonapi: @positions
+    positions = []
+
+    users.each do |user|
+      unless user.positions.nil?
+        user.positions.each do |position|
+          positions << position
+        end
+      end
+    end
+
+    @positions = positions
+
+    render jsonapi: @positions, each_serializer: PositionSerializerSlim
   end
 
   def show
