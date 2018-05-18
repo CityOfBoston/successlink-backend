@@ -4,16 +4,27 @@ class AssociateRecruitingWorkflowJob < ApplicationJob
   def perform(*args)
     Pick.all.each do |pick|
       sleep 1
-      associate_applicant_with_position(pick.applicant_id, pick.position_id)
-      update_applicant_to_selected(pick.applicant)
+
+      applicant = Applicant.find(pick.applicant_id)
+
+      unless applicant.nil?
+        position  = Position.find(pick.position_id)
+
+        unless position.nil?
+          associate_applicant_with_position(applicant, position)
+          update_applicant_to_selected(applicant)
+        else
+          Rails.logger.error("#{pick.position_id} position not found")
+        end
+      else
+        Rails.logger.error("#{pick.applicant_id} applicant not found")
+      end
     end
   end
 
   private
 
-  def associate_applicant_with_position(applicant_id, position_id)
-    applicant = Applicant.find(applicant_id)
-    position = Position.find(position_id)
+  def associate_applicant_with_position(applicant, position)
     Rails.logger.info "Associate applicant iCIMS ID #{applicant.icims_id} with position: #{applicant.id}"
     response = Faraday.post do |req|
       req.url "https://api.icims.com/customers/#{Rails.application.secrets.icims_customer_id}/applicantworkflows"

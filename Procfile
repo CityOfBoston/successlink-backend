@@ -1,2 +1,2 @@
-web: bundle exec puma -b "ssl://0.0.0.0:5000?key=server.key&cert=server.crt"
-worker: bundle exec sidekiq -c 3
+web: thin start -p 5000 --ssl --ssl-key-file server.key --ssl-cert-file server.crt
+worker: sleep 10; bundle exec sidekiq -c 3

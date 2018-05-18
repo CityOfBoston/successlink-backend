@@ -7,8 +7,25 @@ Rails.application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq'
 
+  get 'respond', to: 'offers#respond'
+  get 'applicants/export', to: 'applicants#export'
+  get 'positions/export', to: 'positions#export'
+
+  scope 'admin' do
+    resources :partners do
+      collection do
+        get :report
+      end
+
+      member do
+        post :resend
+      end
+    end
+  end
+
   scope 'api' do
     resources :offers
+
     resources :applicants, only: [:index, :show, :update]
 
     resources :positions, only: [:index, :show, :update, :owned] do
@@ -42,7 +59,7 @@ Rails.application.routes.draw do
     match "workers-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Workers.new.any? { |process_id, thread_id, work| work['queue'] == 'match_lottery' } ? "Active" : "Empty" ]] }, via: :get
   end
 
-  root to: 'offers#index'
+  root to: 'partners#index'
 
   get 'offers/answer'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

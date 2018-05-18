@@ -9,6 +9,15 @@ namespace :export do
     end
   end
 
+  desc 'Update status of candidates that accepted their job offers'
+  task update_accepted_candidates: :environment do
+    # Need to constrain this to acceptors from this run only in future
+    Offer.where(accepted: 'yes').each do |offer|
+      offer.applicant.update(lottery_activated: false)
+      UpdateAcceptApplicantsJob.perform_later(offer.id)
+    end
+  end
+
   task 'Export URLs for Applicant Users'
   task applicant_users: :environment do
     CSV.open('applicant_logins.csv', 'wb') do |csv|
