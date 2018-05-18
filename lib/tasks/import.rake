@@ -20,6 +20,31 @@ namespace :import do
     end
   end
 
+  desc 'Import offer data'
+  task lottery_offer_data: :environment do
+    csv_text = File.read(Rails.root.join('lib', 'import', 'offers.csv'))
+    csv = CSV.parse(csv_text, headers: true, encoding: 'ISO-8859-1')
+    csv.each_with_index do |row, index|
+      applicant = Applicant.find_by_icims_id(row['applicant_id'])
+
+      unless Offer.where(accepted: 'yes').count > 0
+        unless applicant.nil?
+          position = Position.find(row['position_id'])
+          unless position.nil?
+            Offer.new(applicant: applicant, position: position).save!
+            Rails.logger.debug "Offer Generated for #{applicant.icims_id}"
+          else
+            puts "Position #{row['position_id']} not found"
+          end
+        else
+          puts "Applicant #{row['applicant_id']} not found"
+        end
+      else
+        puts "Applicant #{row['applicant_id']} has accepted offer"
+      end
+    end
+  end
+
   desc 'Import position test data'
   task position_test_data: :environment do
     csv_text = File.read(Rails.root.join('lib', 'import', 'positions.csv'))
