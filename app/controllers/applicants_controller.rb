@@ -23,7 +23,13 @@ class ApplicantsController < ApplicationController
   end
 
   def export
-    @applicants = Applicant.all
+    @applicants = []
+
+    Applicant.all.each do |applicant|
+      unless applicant.offers.where(accepted: "yes").count > 0
+        @applicants << applicant
+      end
+    end
 
     render jsonapi: @applicants, each_serializer: ApplicantSerializerSlim
   end
