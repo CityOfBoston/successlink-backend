@@ -1,9 +1,34 @@
-<div class="b">
-  <div class="b-c">
-    <div class="h2 tt-u ta-c p-h300">You've <% if @response == 'yes' %>accepted<% else %>declined<% end %> the job you have been offered.</div>
-    <hr class="hr hr--sq m-h300 m-v500">
-    <div class="ta-c p-h200 t--intro">
-      If you have any questions, please log into the SuccessLink portal or contact BCYF Youth Engagement and Employment at <a href="mailto:youthline@boston.gov">youthline@boston.gov</a>.
+<% if @response == 'yes' %>
+  <div class="b">
+    <div class="b-c">
+      <div class="t--intro p-h300">Thank you for accepting the job offer! You are almost on your way to a summer job. You must do 2 more things:</div>
+      <hr class="hr hr--sq m-h300 m-v500">
+      <div class="p-h300">
+        <ol class="">
+          <li>In the next 3 business days, you will receive instructions to log in to SuccessLink, update your employee profile, upload hiring documents, and complete onboarding tasks. Be prepared! You can find all of the documents that we’ll need from you <a href="https://docs.google.com/document/d/13OFz_F-uL1IqehIYu5E4iGDnRT9GwwWnV12I17kP_Js">here</a>.</li>
+          <li class="m-t400">After submitting your paperwork, you will need to come in to the BCYF Youth Engagement & Employment (YEE) office to complete the hiring process.  We are located at <a href="https://www.google.com/maps?q=1483+Tremont+Street,+Boston,+MA+02120&entry=gmail&source=g">1483 Tremont Street, Boston, MA 02120</a>.</li>
+        </ol>
+      </div>
+      <hr class="hr hr--sq m-h300 m-v500">
+      <div class="p-h300">
+        <div class="h3">YEE OFFICE HOURS:</div>
+        <div class="m-t400">Monday-Friday<br />1:00p.m. - 7:00p.m.</div>
+        <div class="m-t400">Saturday Hours <em>(Every Saturday in June)</em><br />9:00a.m. to 2:00p.m.</div>
+      </div>
+      <hr class="hr hr--sq m-h300 m-v500">
+      <div class="p-h300">
+        <div class="m-t600"><strong>NOTE:</strong> If you do not upload your documents and complete your paperwork within 5 days, your name will be removed from this position and you will be placed back on the waitlist with no guarantee of a job.</div>
+      </div>
     </div>
   </div>
-</div>
+<% else %>
+  <div class="b">
+    <div class="b-c">
+      <div class="h2 tt-u ta-c p-h300">You've declined the job you have been offered.</div>
+      <hr class="hr hr--sq m-h300 m-v500">
+      <div class="ta-c p-h200 t--intro">
+        If you have any questions, please log into the SuccessLink portal or contact BCYF Youth Engagement and Employment at <a href="mailto:youthline@boston.gov">youthline@boston.gov</a>.
+      </div>
+    </div>
+  </div>
+<% end %>

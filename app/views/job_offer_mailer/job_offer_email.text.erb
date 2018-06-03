@@ -1,6 +1,6 @@
 Congratulations <%= @user.applicant.first_name %>!
 
-You're one click away from having a summer job. Please respond to this email right away so you don't lose your spot!
+You're one click away from having a summer job. You must click "Accept" at the bottom of this email to accept this position and find out about the next steps in the hiring process.
 
 We matched you with a job opportunity:
 
@@ -13,6 +13,8 @@ Duties and Responsibilities: <%= @position.duties_responsbilities %>
 <%= @position.primary_contact_person %><br>
 <%= @position.primary_contact_person_title %><br>
 <%= @position.primary_contact_person_phone %>
+
+You have 3 days from the receipt of this email to accept or decline your offer.  If you don't respond by then, we will drop your name to the bottom of our waitlist.
 
 Have questions? Call Youth Engagement and Employment at 617-635-4202, or email us at youthline@boston.gov.
 
@@ -27,8 +29,6 @@ Decline if you don't want this job. We'll ask you to fill out a short survey . P
 <%= @decline_url %>
 
 Thank you!
-
-Deron
 
 BCYF Youth Engagement and Employment
 1483 Tremont St., Boston, MA 02201
