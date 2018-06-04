@@ -18,7 +18,9 @@ class PositionsController < ApplicationController
     users.each do |user|
       unless user.positions.nil?
         user.positions.each do |position|
-          positions << position
+          unless position.active == false
+            positions << position
+          end
         end
       end
     end

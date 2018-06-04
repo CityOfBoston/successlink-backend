@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108214007) do
+ActiveRecord::Schema.define(version: 20180604013021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,8 +93,8 @@ ActiveRecord::Schema.define(version: 20171108214007) do
     t.string    "category"
     t.integer   "grid_id"
     t.geography "location",                     limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
-    t.datetime  "created_at",                                                                               null: false
-    t.datetime  "updated_at",                                                                               null: false
+    t.datetime  "created_at",                                                                                              null: false
+    t.datetime  "updated_at",                                                                                              null: false
     t.integer   "applicant_id"
     t.text      "duties_responsbilities"
     t.text      "ideal_candidate"
@@ -109,6 +109,8 @@ ActiveRecord::Schema.define(version: 20171108214007) do
     t.string    "neighborhood"
     t.string    "primary_contact_person_email"
     t.string    "external_id"
+    t.boolean   "active",                                                                                   default: true
+    t.integer   "original_position_count"
     t.index ["applicant_id"], name: "index_positions_on_applicant_id", using: :btree
   end
 
