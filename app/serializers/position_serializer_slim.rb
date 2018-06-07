@@ -23,15 +23,13 @@ class PositionSerializerSlim < ActiveModel::Serializer
   def open_positions
     accepted_count = 0
     open_count = 0
-    original_allotment = (object.original_position_count / 2).floor
+    original_count = object.original_position_count
     accepted_count = object.offers.where(accepted: "yes").count
-    open_positions = (object.open_positions / 2).floor - accepted_count
+    open_positions = (object.original_position_count / 2).floor
 
-    if open_positions > 0 && open_positions < original_allotment
-      open_count = open_positions
-    elsif open_positions > 0 && open_positions > original_allotment
-      open_count = original_allotment
-    end
+    open_count = open_positions unless (original_count - accepted_count) === 0
+
+    puts "#{open_count} open"
 
     return open_count
   end
