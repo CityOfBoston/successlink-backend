@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'respond', to: 'offers#respond'
   get 'applicants/export', to: 'applicants#export'
   get 'positions/export', to: 'positions#export'
+  get 'lottery/preview', to: 'partners#preview'
 
   scope 'admin' do
     resources :partners do

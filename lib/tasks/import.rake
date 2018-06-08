@@ -27,12 +27,13 @@ namespace :import do
     csv.each_with_index do |row, index|
       applicant = Applicant.find_by_icims_id(row['applicant_id'])
 
-      unless Offer.where(accepted: 'yes').count > 0
+      unless applicant.offers.where(accepted: 'yes').count > 0
         unless applicant.nil?
           position = Position.find(row['position_id'])
           unless position.nil?
             Offer.new(applicant: applicant, position: position).save!
             Rails.logger.debug "Offer Generated for #{applicant.icims_id}"
+            JobOfferMailer.job_offer_email(applicant.user).deliver_later
           else
             puts "Position #{row['position_id']} not found"
           end
