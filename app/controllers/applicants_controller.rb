@@ -25,7 +25,7 @@ class ApplicantsController < ApplicationController
   def export
     @applicants = []
 
-    Applicant.all.each do |applicant|
+    Applicant.where(lottery_activated: true).each do |applicant|
       unless applicant.offers.where(accepted: "yes").count > 0
         @applicants << applicant
       end
