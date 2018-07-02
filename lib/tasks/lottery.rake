@@ -1,6 +1,6 @@
 require 'csv'
 
-LOTTERY_DATE = DateTime.new(2017, 6, 23)
+LOTTERY_DATE = DateTime.new(2018, 6, 29)
 
 namespace :lottery do
   desc 'Build travel time preferences'
@@ -86,6 +86,15 @@ namespace :lottery do
     Offer.where(accepted: 'offer_sent').each do |offer|
       offer.update(accepted: 'expired')
     end
+  end
+  
+  desc 'Get stats'
+  task get_stats: :environment do
+    offers = Offer.where(created_at: LOTTERY_DATE.midnight..LOTTERY_DATE.end_of_day)
+    
+    puts "Sent: #{offers.count}"
+    puts "Accepted: #{offers.where(accepted: 'accepted')}"
+    puts "Declined: #{offers.where(accepted: 'no_bottom_waitlist')}"
   end
 
   desc 'Update status of chosen candidates for this round'
