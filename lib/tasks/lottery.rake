@@ -93,8 +93,8 @@ namespace :lottery do
     offers = Offer.where(created_at: LOTTERY_DATE.midnight..LOTTERY_DATE.end_of_day)
     
     puts "Sent: #{offers.count}"
-    puts "Accepted: #{offers.where(accepted: 'accepted')}"
-    puts "Declined: #{offers.where(accepted: 'no_bottom_waitlist')}"
+    puts "Accepted: #{offers.where(accepted: 'accepted').count}"
+    puts "Declined: #{offers.where(accepted: 'no_bottom_waitlist').count}"
   end
 
   desc 'Update status of chosen candidates for this round'
